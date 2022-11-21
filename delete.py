@@ -32,7 +32,6 @@ def login_delete(username, password, uid, referenceNumber):
 
         posturl = "https://scop.cegep-ste-foy.qc.ca/booked/Web/ajax/reservation_delete.php"
         payload = {
-        # 'userId': '12493',
         'userId': uid,
         'scheduleId': '53', # the sport id
         'resourceId': '4252',

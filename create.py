@@ -3,8 +3,7 @@ from pprint import pprint
 import requests
 import configfile
 from bs4 import BeautifulSoup
-import argparse
-import datetime
+import argparse, datetime
 
 
 parser = argparse.ArgumentParser(description="Create reservations at csfoy gym.")
