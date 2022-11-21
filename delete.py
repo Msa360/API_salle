@@ -4,7 +4,6 @@ import configfile
 from bs4 import BeautifulSoup
 
 
-
 def login_delete(username, password, uid, referenceNumber):
     login_data = {
         'email': username,
