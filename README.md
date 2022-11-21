@@ -3,7 +3,7 @@ Command line tool in python to use an API of a gym.
 
 create a file called "configfile.py"
 
-```
+```python
 # configfile.py
 
 gym_scheduleId = "64"  # sportID (64 for gym)
