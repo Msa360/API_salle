@@ -8,7 +8,7 @@ create a file called "configfile.py"
 
 gym_scheduleId = "64"  # sportID (64 for gym)
 userID =  "11633"      # userID
-username = 2035846     # matricule
+username = 2512534     # matricule
 password = "password"  # password
 
 # if no proxy needed
