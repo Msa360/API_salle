@@ -1,7 +1,13 @@
 # API SALLE
 Command line tool in python to use an API of a gym.
 
-create a file called "configfile.py"
+### Installing
+```shell
+$ git clone "https://github.com/Msa360/API_salle.git"
+$ cd API_salle
+$ pip3 install -r requirements.txt 
+```
+Create a file called "configfile.py" and modify your credentials:
 
 ```python
 # configfile.py
