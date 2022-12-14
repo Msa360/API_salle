@@ -2,9 +2,9 @@
 
 import random
 import requests
-import configfile
+import configfile as configfile
 from create import login_create
-from getressid import find_ressource_id
+from utils import find_ressource_id
 
 
 

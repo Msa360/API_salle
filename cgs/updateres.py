@@ -1,20 +1,11 @@
 # updating
 from pprint import pprint
 import requests
-import configfile 
+import configfile as configfile 
 from bs4 import BeautifulSoup
 import argparse, datetime
 
-parser = argparse.ArgumentParser(description="Update reservations at csfoy gym.")
-parser.add_argument("-rn", "--reference_number", type=str, help="Reservation reference number")
-parser.add_argument("-d", "--day", type=str, default=f"{datetime.date.today()}", help="day of reservation, format: 2022-11-11")
-parser.add_argument("-u", "--userID", type=str, default=configfile.userID, help="userID used for reservation")
-parser.add_argument("-t", "--time", type=str, default=datetime.datetime.now().strftime("%H"), help="starting hour of the reservation")
-parser.add_argument("-r", "--resource", type=str, default="5", help="resource number (1-80)")
-parser.add_argument("-s", "--scheduleId", type=str, default=configfile.gym_scheduleId, help="sport id (default is 64 for gym)")
-parser.add_argument("-v", "--verbose", action="store_true", default=False, help="prints the html response")
 
-args = parser.parse_args()
 
 def login_update(username, password, uid, scheduleId, resourceId, day, starthour, endhour, referenceNumber, verbose=False):
     login_data = {
@@ -24,7 +15,7 @@ def login_update(username, password, uid, scheduleId, resourceId, day, starthour
         'resume': ''
     }
     with requests.session() as session:
-        login_response = session.post('https://scop.cegep-ste-foy.qc.ca/booked/Web/index.php', data=login_data, proxies=configfile.proxies)
+        login_response = session.post('https://scop-sas.csfoy.ca/booked_sas/Web/index.php', data=login_data, proxies=configfile.proxies)
         
 
         login_soup = BeautifulSoup(login_response.text, features='html.parser')
@@ -33,7 +24,7 @@ def login_update(username, password, uid, scheduleId, resourceId, day, starthour
             print(f"csrf: {csrf}")
 
         # after getting the token, let's get the reservationId by viewing the reservation the ref number page response
-        view_ref_num = session.get(url=f'https://scop.cegep-ste-foy.qc.ca/booked/Web/reservation.php?rn={referenceNumber}')
+        view_ref_num = session.get(url=f'https://scop-sas.csfoy.ca/booked_sas/Web/reservation.php?rn={referenceNumber}')
         # pprint(view_ref_num.text)
 
         find_resid_soup = BeautifulSoup(view_ref_num.text, features='html.parser')
@@ -41,7 +32,7 @@ def login_update(username, password, uid, scheduleId, resourceId, day, starthour
         if verbose:
             print(f"reservationId: {reservationId}")
 
-        posturl = "https://scop.cegep-ste-foy.qc.ca/booked/Web/ajax/reservation_update.php"
+        posturl = "https://scop-sas.csfoy.ca/booked_sas/Web/ajax/reservation_update.php"
         payload = {
         'userId': uid,
         'scheduleId': scheduleId, # the sport id
@@ -75,6 +66,17 @@ def login_update(username, password, uid, scheduleId, resourceId, day, starthour
     
 
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description="Update reservations at csfoy gym.")
+    parser.add_argument("-rn", "--reference_number", type=str, help="Reservation reference number")
+    parser.add_argument("-d", "--day", type=str, default=f"{datetime.date.today()}", help=f"day of reservation, format: {datetime.date.today()}")
+    parser.add_argument("-u", "--userID", type=str, default=configfile.userID, help="userID used for reservation")
+    parser.add_argument("-t", "--time", type=str, default=datetime.datetime.now().strftime("%H"), help="starting hour of the reservation")
+    parser.add_argument("-r", "--resource", type=str, default="5", help="resource number (1-80)")
+    parser.add_argument("-s", "--scheduleId", type=str, default=configfile.gym_scheduleId, help="sport id (default is 64 for gym)")
+    parser.add_argument("-v", "--verbose", action="store_true", default=False, help="prints the html response")
+    
+    args = parser.parse_args()
     
     # adds zero to single digits
     if len(args.time) < 2:

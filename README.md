@@ -1,7 +1,7 @@
 # API SALLE
-Command line tool in python to use an API of a gym.
+Command line tool in python to use the API of csfoy gym.
 
-### Installing
+## Installing
 ```shell
 $ git clone "https://github.com/Msa360/API_salle.git"
 $ cd API_salle
@@ -26,4 +26,13 @@ proxies = {
     "https": "46.145.102.101:3428",
     "http": "46.145.102.101:3428"
 }
+```
+
+## Usage
+```python
+import cgs
+```
+### command line usage
+```shell
+python3 /your/path/cgs -h
 ```

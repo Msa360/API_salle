@@ -1,21 +1,9 @@
 # creating 
 from pprint import pprint
 import requests
-import configfile
+import configfile as configfile
 from bs4 import BeautifulSoup
 import argparse, datetime
-
-
-parser = argparse.ArgumentParser(description="Create reservations at csfoy gym.")
-parser.add_argument("-d", "--day", type=str, default=f"{datetime.date.today()}", help="day of reservation, format: 2022-11-11")
-parser.add_argument("-u", "--userID", type=str, default=configfile.userID, help="userID used for reservation")
-parser.add_argument("-t", "--time", type=str, default=datetime.datetime.now().strftime("%H"), help="starting hour of the reservation")
-parser.add_argument("-r", "--resource", type=str, default="30", help="resource number (1-80)")
-parser.add_argument("-s", "--scheduleId", type=str, default=configfile.gym_scheduleId, help="sport id (default is 64 for gym)")
-parser.add_argument("-v", "--verbose", action="store_true", default=False, help="prints the html response")
-
-args = parser.parse_args()
-
 
 
 
@@ -28,7 +16,7 @@ def login_create(username: str, password: str, uid: str, scheduleId: str, resour
         'resume': ''
     }
     with requests.session() as session:
-        login_response = session.post('https://scop.cegep-ste-foy.qc.ca/booked/Web/index.php', data=login_data, proxies=configfile.proxies)
+        login_response = session.post('https://scop-sas.csfoy.ca/booked_sas/Web/index.php', data=login_data, proxies=configfile.proxies)
         
 
         login_soup = BeautifulSoup(login_response.text, features='html.parser')
@@ -37,7 +25,7 @@ def login_create(username: str, password: str, uid: str, scheduleId: str, resour
             print(f"csrf: {csrf}")
 
         # after getting the token, let's reserve
-        posturl = "https://scop.cegep-ste-foy.qc.ca/booked/Web/ajax/reservation_save.php"
+        posturl = "https://scop-sas.csfoy.ca/booked_sas/Web/ajax/reservation_save.php"
         payload = {
         # 'userId': '12493',
         # 'scheduleId': '64',
@@ -71,6 +59,16 @@ def login_create(username: str, password: str, uid: str, scheduleId: str, resour
 
         
 if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser(description="Create reservations at csfoy gym.")
+    parser.add_argument("-d", "--day", type=str, default=f"{datetime.date.today()}", help=f"day of reservation, format: {datetime.date.today()}")
+    parser.add_argument("-u", "--userID", type=str, default=configfile.userID, help="userID used for reservation")
+    parser.add_argument("-t", "--time", type=str, default=datetime.datetime.now().strftime("%H"), help="starting hour of the reservation")
+    parser.add_argument("-r", "--resource", type=str, default="30", help="resource number (1-80)")
+    parser.add_argument("-s", "--scheduleId", type=str, default=configfile.gym_scheduleId, help="sport id (default is 64 for gym)")
+    parser.add_argument("-v", "--verbose", action="store_true", default=False, help="prints the html response")
+
+    args = parser.parse_args()
     
     # adds zero to single digits
     if len(args.time) < 2:
