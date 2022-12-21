@@ -1,7 +1,9 @@
 
 import requests
 from bs4 import BeautifulSoup
-import configfile as configfile
+
+from . import configfile
+# import configfile as configfile
 
 def find_ressource_id(sportrange) -> list:
     '''finds the ressource id of an element'''

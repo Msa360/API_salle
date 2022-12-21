@@ -1,11 +1,9 @@
 # full all reserve of all stuff
-
 import random
-import requests
-import configfile as configfile
-from create import login_create
-from utils import find_ressource_id
 
+from . import configfile
+from .create import login_create
+from .utils import find_ressource_id
 
 
 
@@ -15,6 +13,9 @@ from utils import find_ressource_id
 # ressources_id = ['4251', '4252', '4253', '4254', '4255', '4256', '4257']
 
 def reserve_all(sport_id_range: list, days_list: list) -> None:
+    """
+    Reserves all specified fields.
+    """
     tries = 0
     successful_tries = 0
     hours_list = ['10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00']
@@ -39,21 +40,6 @@ def reserve_all(sport_id_range: list, days_list: list) -> None:
     print(f"{successful_tries} successful tries on {tries} tries.")
 
 
-print(requests.get('http://jsonip.com', proxies=configfile.proxies).json()['ip'])
+# print(requests.get('http://jsonip.com').json()['ip'])
 # reserve_all([53], ['2022-04-30'])
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

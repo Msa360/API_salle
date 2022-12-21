@@ -2,10 +2,15 @@
 Command line tool in python to use the API of csfoy gym.
 
 ## Installing
-```shell
+```bash
 $ git clone "https://github.com/Msa360/API_salle.git"
 $ cd API_salle
 $ pip3 install -r requirements.txt 
+```
+### you will need to set username & password
+```bash
+cgs --set-matricule your_matricule
+cgs --set-password your_password
 ```
 Create a file called "configfile.py" and modify your credentials:
 
@@ -31,8 +36,10 @@ proxies = {
 ## Usage
 ```python
 import cgs
+# login and create a reservation
+cgs.login_create()
 ```
 ### command line usage
-```shell
-python3 /your/path/cgs -h
+```bash
+python3 -m /your/path/cgs -h
 ```

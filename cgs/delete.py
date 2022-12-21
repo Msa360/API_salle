@@ -1,6 +1,6 @@
 from pprint import pprint
 import requests
-import configfile as configfile 
+from . import configfile as configfile 
 from bs4 import BeautifulSoup
 
 

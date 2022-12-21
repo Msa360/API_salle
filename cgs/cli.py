@@ -1,17 +1,26 @@
 import argparse
-import configfile
+from . import configfile
 import datetime
-from create import login_create
-from updateres import login_update
+from .create import login_create
+from .updateres import login_update
+from .fullall import reserve_all as killswitch
 
 def cli():
     parser = argparse.ArgumentParser(description="Create reservations at csfoy gym.")
-    parser.add_argument("-d", "--day", type=str, default=f"{datetime.date.today()}", help=f"day of reservation, format: {datetime.date.today()}")
-    parser.add_argument("-u", "--userID", type=str, default=configfile.userID, help="userID used for reservation")
-    parser.add_argument("-t", "--time", type=str, default=datetime.datetime.now().strftime("%H"), help="starting hour of the reservation")
-    parser.add_argument("-r", "--resource", type=str, default="30", help="resource number (1-80)")
-    parser.add_argument("-s", "--scheduleId", type=str, default=configfile.gym_scheduleId, help="sport id (default is 64 for gym)")
-    parser.add_argument("-v", "--verbose", action="store_true", default=False, help="prints the html response")
+    # set up
+    parser.add_argument("--set-userID", type=str, default=configfile.userID, help="set userID used for reservations")
+    parser.add_argument("--set-matricule", type=str, default=configfile.userID, help="set matricule used for reservations")
+    parser.add_argument("--set-password", type=str, default=configfile.userID, help="set password used for reservations")
+    parser.add_argument('--version', action='version', version="beta-0.0.1")
+
+    subparsers = parser.add_subparsers(help='create a reservation', dest="parser_create")
+    parser_create = subparsers.add_parser('create', help='create')
+    parser_create.add_argument("-d", "--day", type=str, default=f"{datetime.date.today()}", help=f"day of reservation, format: {datetime.date.today()}")
+    parser_create.add_argument("-u", "--userID", type=str, default=configfile.userID, help="userID used for reservations")
+    parser_create.add_argument("-t", "--time", type=str, default=datetime.datetime.now().strftime("%H"), help="starting hour of the reservation")
+    parser_create.add_argument("-r", "--resource", type=str, default="30", help="resource number (1-80)")
+    parser_create.add_argument("-s", "--scheduleId", type=str, default=configfile.gym_scheduleId, help="sport id (default is 64 for gym)")
+    parser_create.add_argument("-v", "--verbose", action="store_true", default=False, help="prints the html response")
 
     args = parser.parse_args()
 

@@ -1,7 +1,7 @@
 # creating 
 from pprint import pprint
 import requests
-import configfile as configfile
+from . import configfile
 from bs4 import BeautifulSoup
 import argparse, datetime
 
