@@ -1,9 +1,9 @@
 
 import requests
 from bs4 import BeautifulSoup
+import json
 
 from . import configfile
-# import configfile as configfile
 
 def find_ressource_id(sportrange) -> list:
     '''finds the ressource id of an element'''
@@ -29,5 +29,15 @@ def find_ressource_id(sportrange) -> list:
 def find_reference_num(sportrange):
     
     pass
+
+class Config():
+    """
+    Parses and create a config object from configfile.json
+    """
+    def __init__(self, file: str) -> None:
+        self.json = json.load("configfile.json")
+        self.gym_scheduleId = self.json["gym_scheduleId"]
+        self.userID = self.json["userID"]
+
 
 # print(find_ressource_id(53))
