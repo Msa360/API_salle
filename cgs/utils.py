@@ -1,9 +1,9 @@
 
 import requests
 from bs4 import BeautifulSoup
-import json
+import json, os
 
-from . import configfile
+# from . import configfile
 
 def find_ressource_id(sportrange) -> list:
     '''finds the ressource id of an element'''
@@ -26,18 +26,34 @@ def find_ressource_id(sportrange) -> list:
     except:
         return []
         
-def find_reference_num(sportrange):
+def find_reference_num(resourceId):
     
     pass
 
-class Config():
+class _Config():
     """
     Parses and create a config object from configfile.json
     """
-    def __init__(self, file: str) -> None:
-        self.json = json.load("configfile.json")
+    def __init__(self) -> None:
+        with open(os.path.join(os.path.dirname(__file__), 'configfile.json'), "r") as f:
+            self.json = json.load(f)
         self.gym_scheduleId = self.json["gym_scheduleId"]
         self.userID = self.json["userID"]
+        self.username = self.json["username"]
+        self.password = self.json["password"]
+        self.proxies = self.json["proxies"]
 
+    def __str__(self) -> str:
+        return self.json.__str__()
 
+    def mod(self, key:str, value):
+        """
+        modify the value for the specified key in the configfile.json
+        "userID", "username", "password", "proxies"
+        """
+        self.json[key] = value
+        with open(os.path.join(os.path.dirname(__file__), 'configfile.json'), "w") as f:
+            json.dump(self.json, f)
+        
+configfile = _Config()
 # print(find_ressource_id(53))

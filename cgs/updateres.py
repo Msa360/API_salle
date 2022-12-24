@@ -4,6 +4,7 @@ import requests
 from . import configfile
 from bs4 import BeautifulSoup
 import argparse, datetime
+from .utils import find_reference_num
 
 
 
@@ -63,7 +64,6 @@ def login_update(username, password, uid, scheduleId, resourceId, day, starthour
             print("\033[91m" + str(error_msg) + "\n" + "\033[93m" + str(error_reason)+"\033[0m")
         
 
-    
 
 if __name__ == "__main__":
 
@@ -101,4 +101,4 @@ if __name__ == "__main__":
     print(
         f"\033[0;36mSending reservation update request for {starthour}, {args.day}\nAt resource {args.resource}, using {args.userID}, for scheduleId {args.scheduleId}.\033[0m"
         )
-    login_update(configfile.username, configfile.password, uid=args.userID, scheduleId=args.scheduleId, resourceId=args.resource, day=args.day, starthour=starthour, endhour=endhour, referenceNumber=args.reference_number, verbose=args.verbose)
+    login_update(configfile.username, configfile.password, uid=args.userID, scheduleId=args.scheduleId, resourceId=resource_number, day=args.day, starthour=starthour, endhour=endhour, referenceNumber=args.reference_number, verbose=args.verbose)

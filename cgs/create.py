@@ -52,10 +52,15 @@ def login_create(username: str, password: str, uid: str, scheduleId: str, resour
         try:
             success_msg = post_soup.find('div', id='created-message')
             print("\033[92m"+success_msg.get_text()+"\033[0m")
+            ref_num = post_soup.find('div', id="reference-number").get_text().split()[-1]
+            if verbose:
+                print(f"reference number: {ref_num}")
+            return ref_num
         except:
             error_msg = post_soup.find('div', id='failed-message').get_text()
             error_reason = post_soup.find('div', class_='error').get_text()
             print("\033[91m" + str(error_msg) + "\n" + "\033[93m" + str(error_reason)+"\033[0m")
+            return None
 
         
 if __name__ == "__main__":
