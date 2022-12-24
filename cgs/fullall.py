@@ -95,7 +95,7 @@ def reserve_all(sport_id_range: list, days_list: list) -> None:
                     if hours_list.index(hour) != len(hours_list) - 1:
                         end_hour =  hours_list[hours_list.index(hour) + 1]
                         for ressid in ressources_id: 
-                            uid = str(random.randint(12000, 12100))
+                            uid = str(random.randint(11000, 13100))
 
 
 
