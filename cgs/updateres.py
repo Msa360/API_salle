@@ -1,7 +1,7 @@
 # updating
 from pprint import pprint
 import requests
-from . import configfile
+from .utils import configfile
 from bs4 import BeautifulSoup
 import argparse, datetime
 from .utils import find_reference_num

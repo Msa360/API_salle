@@ -1,4 +1,3 @@
-
 import requests
 from bs4 import BeautifulSoup
 import json, os
@@ -35,8 +34,16 @@ class _Config():
     Parses and create a config object from configfile.json
     """
     def __init__(self) -> None:
-        with open(os.path.join(os.path.dirname(__file__), 'configfile.json'), "r") as f:
-            self.json = json.load(f)
+        try:
+            with open(os.path.join(os.path.dirname(__file__), 'configfile.json'), "r") as f:
+                self.json = json.load(f)
+        except:
+            try:
+                # from https://github.com/instaloader/instaloader/blob/3cc29a4ceb3ff4cd04a73dd4b20979b03128f454/instaloader/instaloader.py#L30
+                with open(os.path.join(os.getenv("XDG_CONFIG_HOME", os.path.expanduser("~/.config")),'configcgs.json'), "r") as f:
+                    self.json = json.load(f)
+            except:
+                raise Exception("If you are using Windows, CGS will soon be available, see: https://github.com/Msa360/cgs-csfoy-gym for more info.")
         self.gym_scheduleId = self.json["gym_scheduleId"]
         self.userID = self.json["userID"]
         self.username = self.json["username"]

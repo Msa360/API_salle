@@ -1,9 +1,9 @@
-# API SALLE
-Command line tool in python to use the API of csfoy gym.
+# CGS API
+### Command line tool in python to place & update reservations at Cégep Sainte-Foy gym.
 
 ## Installing
 ```bash
-$ git clone "https://github.com/Msa360/API_salle.git"
+$ git clone "https://github.com/Msa360/cgs-csfoy-gym.git"
 $ cd API_salle
 $ pip3 install -r requirements.txt 
 ```
