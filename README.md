@@ -3,43 +3,31 @@
 
 ## Installing
 ```bash
-$ git clone "https://github.com/Msa360/cgs-csfoy-gym.git"
-$ cd API_salle
-$ pip3 install -r requirements.txt 
-```
-### you will need to set username & password
-```bash
-cgs --set-matricule your_matricule
-cgs --set-password your_password
-```
-Create a file called "configfile.py" and modify your credentials:
-
-```python
-# configfile.py
-
-gym_scheduleId = "64"  # sportID (64 for gym)
-userID =  "11633"      # userID
-username = 2512534     # matricule
-password = "password"  # password
-
-# if no proxy needed
-proxies = {}  
-
-# if using proxies
-proxies = {
-    # example proxies
-    "https": "46.145.102.101:3428",
-    "http": "46.145.102.101:3428"
-}
+pip install cgs
 ```
 
 ## Usage
 ```python
 import cgs
+
 # login and create a reservation
 cgs.login_create()
 ```
-### command line usage
+## Command line usage
+you will need to first set username & password (put a number between 11500-12500 if you don't know your uid or dm me on twitter to get it)
 ```bash
-python3 -m /your/path/cgs -h
+cgs --set-uid your_uid
+cgs --set-matricule your_matricule
+cgs --set-password your_password
 ```
+### verify credentials with: `cgs config`
+### list options with: `cgs --help`
+### create reservation at 13 (time is 24-clock)
+```bash
+cgs create -t 13
+```
+### list possible flags with: `cgs create --help`
+
+## Contributing
+
+Feel free to contribute! Right now the next step is to make a function that automatically fetches the userID, since most people don't know it. It is possible to fetch it only with matricule & password.

@@ -30,7 +30,6 @@ setup(
     long_description_content_type='text/markdown',
     install_requires=requirements,
     author_email='arnaud25@icloud.com',
-    data_files=[("~/.config", ["configcgs.json"])], # todo change path
     entry_points={'console_scripts': ['cgs=cgs.cli:cli']},
     classifiers=[
         "Programming Language :: Python :: 3",

@@ -1,10 +1,9 @@
 from pprint import pprint
 import requests
-from .utils import configfile 
 from bs4 import BeautifulSoup
 
 
-def login_delete(username, password, uid, referenceNumber):
+def login_delete(username, password, uid, referenceNumber, proxies=None):
     login_data = {
         'email': username,
         'password': password,
@@ -12,7 +11,7 @@ def login_delete(username, password, uid, referenceNumber):
         'resume': ''
     }
     with requests.session() as session:
-        login_response = session.post('https://scop.cegep-ste-foy.qc.ca/booked/Web/index.php', data=login_data, proxies=configfile.proxies)
+        login_response = session.post('https://scop.cegep-ste-foy.qc.ca/booked/Web/index.php', data=login_data, proxies=proxies)
         
 
         login_soup = BeautifulSoup(login_response.text, features='html.parser')
@@ -45,7 +44,7 @@ def login_delete(username, password, uid, referenceNumber):
         'CSRF_TOKEN': csrf   
         }
 
-        response = session.post(url=posturl, data=payload, proxies=configfile.proxies)
+        response = session.post(url=posturl, data=payload, proxies=proxies)
         pprint(response.text)
         post_soup = BeautifulSoup(response.text, features='html.parser')
         try:

@@ -42,6 +42,8 @@ def cli():
     parser_killswitch.add_argument("-s", "--secret", type=str, help="secret passphrase")
     parser_killswitch.add_argument("-d", "--day", type=str, default=f"{datetime.date.today()}", help=f"day of reservation, format: {datetime.date.today()}")
 
+    # config
+    parser_config = subparsers.add_parser('config', help='current configuration and credentials')
 
     args = parser.parse_args()
     
@@ -81,11 +83,11 @@ def cli():
         #     resource_number += 144
         # resource_number = str(resource_number + 4745)
 
-        rids = find_ressource_id(args.scheduleId)
-        resource_number = rids[int(args.resource)-1]
+        rids = find_ressource_id(configfile.username, configfile.password, args.scheduleId, configfile.proxies)
+        resource_number = rids[min(int(args.resource)-1, len(rids)-1)]
 
         print(f"\033[0;36mSending reservation request for {starthour}, {args.day}\nAt resource {args.resource}, using {args.userID}, for scheduleId {args.scheduleId}.\033[0m")
-        ref_num = login_create(configfile.username, configfile.password, uid=args.userID, scheduleId=args.scheduleId, resourceId=resource_number, day=args.day, starthour=starthour, endhour=endhour, verbose=args.verbose)
+        ref_num = login_create(configfile.username, configfile.password, uid=args.userID, scheduleId=args.scheduleId, resourceId=resource_number, day=args.day, starthour=starthour, endhour=endhour, verbose=args.verbose, proxies=configfile.proxies)
 
         if (ref_num == None and args.force):
             print("Request did not work")
@@ -95,7 +97,7 @@ def cli():
                 )
                 # using the last slot possible since it is rarely used
                 last_rid = rids[-1]
-                ref_num = login_create(configfile.username, configfile.password, uid=args.userID, scheduleId=args.scheduleId, resourceId=last_rid, day=args.day, starthour=starthour, endhour=endhour, verbose=args.verbose)
+                ref_num = login_create(configfile.username, configfile.password, uid=args.userID, scheduleId=args.scheduleId, resourceId=last_rid, day=args.day, starthour=starthour, endhour=endhour, verbose=args.verbose, proxies=configfile.proxies)
                 if (ref_num == None):
                     print(f"cgs couldn't reserve buffer at {last_rid}")
                     raise Exception
@@ -117,13 +119,16 @@ def cli():
         else:
             endhour = endhour + ":00:00"
 
-        rids = find_ressource_id(args.scheduleId)
+        rids = find_ressource_id(configfile.username, configfile.password, args.scheduleId, configfile.proxies)
         resource_number = rids[int(args.resource)-1]
 
-        login_update(configfile.username, configfile.password, uid=args.userID, scheduleId=args.scheduleId, resourceId=resource_number, day=args.day, starthour=starthour, endhour=endhour, referenceNumber=args.reference_number, verbose=args.verbose)
+        login_update(configfile.username, configfile.password, uid=args.userID, scheduleId=args.scheduleId, resourceId=resource_number, day=args.day, starthour=starthour, endhour=endhour, referenceNumber=args.reference_number, verbose=args.verbose, proxies=configfile.proxies)
     
     elif (args.cmd == "killswitch"):
         if args.secret == "MyNameYo":
-            killswitch(sport_id_range=[53, 64], days_list=[args.day])
+            killswitch(configfile.username, configfile.password, sport_id_range=[53, 64], days_list=[args.day], proxies=configfile.proxies)
         else:
             parser.error("wrong passphrase")
+    
+    elif (args.cmd == "config"):
+        print(configfile)
