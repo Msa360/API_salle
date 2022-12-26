@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json, os, platform, tempfile
 
-def formattime(time: int) -> tuple[str, str]:
+def formattime(time: int) -> tuple:
     """
     adds zero to single digits
     """
