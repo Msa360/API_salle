@@ -44,7 +44,7 @@ def find_ressource_id(username, password, sportrange, proxies=None, r_session=No
     except:
         return []
 
-def get_uid(username, password, sport_id: list[str], proxies=None, r_session=None):
+def get_uid(username, password, sport_id: list, proxies=None, r_session=None):
     """
     get the uid of user by looking at html response
     """
