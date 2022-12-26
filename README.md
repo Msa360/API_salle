@@ -15,19 +15,19 @@ import cgs
 cgs.login_create()
 ```
 ## Command line usage
-you will need to first set username & password (put a number between 11500-12500 if you don't know your uid or dm me on twitter to get it)
+In order to get started you will need to first set matricule & password and run `--get-uid` to fetch uid (make sure that your matricule & password are correct else you will not be able to get your uid). 
 ```bash
-cgs --set-uid your_uid
-cgs --set-matricule your_matricule
-cgs --set-password your_password
+cgs config --mat your_matricule
+cgs config --pwd your_password
+cgs config --get-uid
 ```
-verify credentials with: `cgs config`
+verify credentials with: `cgs config --show`
 
 list options with: `cgs --help`
 
-### create reservation at 13 (time is 24-clock)
+### ex: create reservation at 12 (time is 0-24)
 ```bash
-cgs create -t 13
+cgs create -t 12
 ```
 list possible flags with: `cgs create --help`
 

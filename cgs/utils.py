@@ -67,7 +67,7 @@ def get_uid(username, password, sport_id: list[str], proxies=None, r_session=Non
         userid = page_soup.find('input', id='userId').get('value')
         if userid != None:
             configfile.mod("userID", userid)
-            print("successfully fetched userid...")
+            print("successfully fetched userid \U00002705") # green checkmark
         else:
             raise Exception
     except:

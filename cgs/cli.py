@@ -126,7 +126,7 @@ def cli():
             print(configfile)
 
         if (args.auto_uid):
-            sp_id_list = [str(configfile.gym_scheduleId), '52']
+            sp_id_list = [str(configfile.gym_scheduleId), '27']
             sp_id_list += [str(i) for i in range(100)]
             get_uid(configfile.username, configfile.password, sport_id=sp_id_list)
             
