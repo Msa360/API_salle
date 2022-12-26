@@ -1,4 +1,5 @@
-# CGS API
+# CGS API 
+[![Downloads](https://pepy.tech/badge/cgs)](https://pepy.tech/project/cgs) [![PyPI](https://img.shields.io/pypi/v/cgs?color=%230eb00e)](https://pypi.org/project/cgs)
 ### Command line tool in python to place & update reservations at Cégep Sainte-Foy gym.
 
 ## Installing
@@ -20,14 +21,16 @@ cgs --set-uid your_uid
 cgs --set-matricule your_matricule
 cgs --set-password your_password
 ```
-### verify credentials with: `cgs config`
-### list options with: `cgs --help`
+verify credentials with: `cgs config`
+
+list options with: `cgs --help`
+
 ### create reservation at 13 (time is 24-clock)
 ```bash
 cgs create -t 13
 ```
-### list possible flags with: `cgs create --help`
+list possible flags with: `cgs create --help`
 
 ## Contributing
 
-Feel free to contribute! Right now the next step is to make a function that automatically fetches the userID, since most people don't know it. It is possible to fetch it only with matricule & password.
+Feel free to contribute! Right now the next step is to make a function that automatically fetches the userID, since most people don't know it. It is possible to fetch it only with matricule & password. DM me on twitter [@msa720360](https://twitter.com/msa720360) if you have any questions.

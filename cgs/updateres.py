@@ -2,7 +2,6 @@
 from pprint import pprint
 import requests
 from bs4 import BeautifulSoup
-import argparse, datetime
 
 
 def login_update(username, password, uid, scheduleId, resourceId, day, starthour, endhour, referenceNumber, verbose=False, proxies=None):

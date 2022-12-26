@@ -2,7 +2,24 @@ import requests
 from bs4 import BeautifulSoup
 import json, os, platform, tempfile
 
-def find_ressource_id(username, password, sportrange, proxies=None) -> list:
+def formattime(time: int) -> tuple[str, str]:
+    """
+    adds zero to single digits
+    """
+    time = str(time)
+    if len(time) < 2:
+        starthour = "0" + time + ":00:00"
+    else:
+        starthour = time + ":00:00"
+    endhour = str(int(time) + 1)
+    if len(endhour) < 2:
+        endhour = "0" + endhour + ":00:00"
+    else:
+        endhour = endhour + ":00:00"
+
+    return (starthour, endhour)
+
+def find_ressource_id(username, password, sportrange, proxies=None, r_session=None) -> list:
     '''finds the ressource id of an element'''
     login_data = {
         'email': username,
@@ -11,18 +28,53 @@ def find_ressource_id(username, password, sportrange, proxies=None) -> list:
         'resume': ''
     }
     try:
-        with requests.session() as session:
-            login_response = session.post('https://scop-sas.csfoy.ca/booked_sas/Web/index.php', data=login_data, proxies=proxies)
-            r = session.get(f'https://scop-sas.csfoy.ca/booked_sas/Web/schedule.php?sid={sportrange}', proxies=proxies)
-            ress_soup = BeautifulSoup(r.text, features='html.parser')
-            ress_id_list = []
-            for i in ress_soup.find_all('a', {'class': 'resourceNameSelector'}):
-                ress_id_list.append(i.get('resourceid'))
+        if (r_session != None):
+            r_session.post('https://scop-sas.csfoy.ca/booked_sas/Web/index.php', data=login_data, proxies=proxies)
+            r = r_session.get(f'https://scop-sas.csfoy.ca/booked_sas/Web/schedule.php?sid={sportrange}', proxies=proxies)
+        else:
+            with requests.session() as session:
+                session.post('https://scop-sas.csfoy.ca/booked_sas/Web/index.php', data=login_data, proxies=proxies)
+                r = session.get(f'https://scop-sas.csfoy.ca/booked_sas/Web/schedule.php?sid={sportrange}', proxies=proxies)
+        ress_soup = BeautifulSoup(r.text, features='html.parser')
+        ress_id_list = []
+        for i in ress_soup.find_all('a', {'class': 'resourceNameSelector'}):
+            ress_id_list.append(i.get('resourceid'))
 
             return ress_id_list
     except:
         return []
 
+def get_uid(username, password, sport_id: list[str], proxies=None, r_session=None):
+    """
+    get the uid of user by looking at html response
+    """
+    print("trying to get userid..."+ sport_id[0])
+
+    login_data = {'email': username, 'password': password, 'login': 'submit', 'resume': ''}
+    if (r_session == None):
+        session = requests.Session()
+        # getting loggeg in
+        session.post('https://scop-sas.csfoy.ca/booked_sas/Web/index.php', data=login_data, proxies=proxies)
+    else:
+        session = r_session
+
+    try:
+        dashboard = session.get(f"https://scop-sas.csfoy.ca/booked_sas/Web/schedule.php?sid={sport_id[0]}")
+        dashboard_soup = BeautifulSoup(dashboard.text, features='html.parser')
+        page_href = dashboard_soup.find('td', {'class': 'reservable'}).get('data-href')
+        page_response = session.get(f"https://scop-sas.csfoy.ca/booked_sas/Web/{page_href}")
+        page_soup = BeautifulSoup(page_response.text, features='html.parser')
+        userid = page_soup.find('input', id='userId').get('value')
+        if userid != None:
+            configfile.mod("userID", userid)
+            print("successfully fetched userid...")
+        else:
+            raise Exception
+    except:
+        try:
+            get_uid(username, password, sport_id=sport_id[1:], proxies=proxies, r_session=session)
+        except:
+            raise Exception("CGS is currently unable to get the uid, try to add it manually or type 'cgs config -h' for help")
 
 
 class _Config():

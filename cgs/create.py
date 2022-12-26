@@ -2,8 +2,6 @@
 from pprint import pprint
 import requests
 from bs4 import BeautifulSoup
-import argparse, datetime
-
 
 
 def login_create(username: str, password: str, uid: str, scheduleId: str, resourceId: str, day: str, starthour: str, endhour: str, verbose=False, proxies=None): #must all be strings

@@ -1,5 +1,5 @@
 import argparse
-from .utils import configfile, find_ressource_id
+from .utils import configfile, find_ressource_id, get_uid, formattime
 import datetime
 from .create import login_create
 from .updateres import login_update
@@ -9,10 +9,8 @@ from . import __version__
 
 def cli():
     parser = argparse.ArgumentParser(description="Create reservations at csfoy gym.")
+
     # set up
-    parser.add_argument("--set-uid", type=str, dest="uid", help="set userID used for reservations")
-    parser.add_argument("--set-mat", type=str, dest="matricule", help="set matricule used for reservations")
-    parser.add_argument("--set-pwd", type=str, dest="password", help="set password used for reservations")
     parser.add_argument("-v", '--version', action='version', version=__version__)
 
     subparsers = parser.add_subparsers(help='create/modify reservations', dest="cmd")
@@ -44,35 +42,25 @@ def cli():
 
     # config
     parser_config = subparsers.add_parser('config', help='current configuration and credentials')
+    parser_config.add_argument("-s", "--show", action="store_true", default=False, help="shows the current configuration")
+    parser_config.add_argument("--mat", type=str, dest="matricule", help="set matricule used for reservations")
+    parser_config.add_argument("--pwd", type=str, dest="password", help="set password used for reservations")
+    parser_config.add_argument("--uid", type=str, dest="uid", help="set userID used for reservations")
+    parser_config.add_argument("--get-uid", dest="auto_uid", action="store_true", default=False, help="automatically finds & set your uid based on your matricule & password")
+
 
     args = parser.parse_args()
     
 
     
-    if (args.uid != None):
-        configfile.mod("userID", args.uid)
+    
 
-    if (args.matricule != None):
-        configfile.mod("username", args.matricule)
-
-    if (args.password != None):
-        configfile.mod("password", args.password)
-
-    if (args.cmd == None and args.uid == None and args.matricule == None and args.password == None):
+    if (args.cmd == None):
         parser.error("no arguments were passed, see documentation for more help")
         
     elif (args.cmd == "create"):
-        # adds zero to single digits
-        if len(args.time) < 2:
-            starthour = "0" + args.time + ":00:00"
-        else:
-            starthour = args.time + ":00:00"
 
-        endhour = str(int(args.time) + 1)
-        if len(endhour) < 2:
-            endhour = "0" + endhour + ":00:00"
-        else:
-            endhour = endhour + ":00:00"
+        starthour, endhour = formattime(args.time)
 
         # correcting resource id with the lease method
         # OG_resource_number = int(args.resource)
@@ -108,16 +96,7 @@ def cli():
     elif (args.cmd == "update"):
 
         # adds zero to single digits
-        if len(args.time) < 2:
-            starthour = "0" + args.time + ":00:00"
-        else:
-            starthour = args.time + ":00:00"
-
-        endhour = str(int(args.time) + 1)
-        if len(endhour) < 2:
-            endhour = "0" + endhour + ":00:00"
-        else:
-            endhour = endhour + ":00:00"
+        starthour, endhour = formattime(args.time)
 
         rids = find_ressource_id(configfile.username, configfile.password, args.scheduleId, configfile.proxies)
         resource_number = rids[int(args.resource)-1]
@@ -131,4 +110,23 @@ def cli():
             parser.error("wrong passphrase")
     
     elif (args.cmd == "config"):
-        print(configfile)
+        if (args.uid == None and args.matricule == None and args.password == None and args.show == False and args.auto_uid == False):
+            parser.error("no arguments were passed, see documentation for more help")
+
+        if (args.uid != None):
+            configfile.mod("userID", args.uid)
+
+        if (args.matricule != None):
+            configfile.mod("username", args.matricule)
+
+        if (args.password != None):
+            configfile.mod("password", args.password)
+
+        if (args.show):
+            print(configfile)
+
+        if (args.auto_uid):
+            sp_id_list = [str(configfile.gym_scheduleId), '52']
+            sp_id_list += [str(i) for i in range(100)]
+            get_uid(configfile.username, configfile.password, sport_id=sp_id_list)
+            
