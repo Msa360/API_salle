@@ -24,8 +24,6 @@ def login_create(username: str, password: str, uid: str, scheduleId: str, resour
         # after getting the token, let's reserve
         posturl = "https://scop-sas.csfoy.ca/booked_sas/Web/ajax/reservation_save.php"
         payload = {
-        # 'userId': '12493',
-        # 'scheduleId': '64',
         'userId': uid,
         'scheduleId': scheduleId, # the sport id
         'resourceId': resourceId,
