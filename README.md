@@ -1,5 +1,5 @@
 # CGS API 
-[![Downloads](https://pepy.tech/badge/cgs)](https://pepy.tech/project/cgs) [![PyPI](https://img.shields.io/pypi/v/cgs?color=%230eb00e)](https://pypi.org/project/cgs)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/cgs?color=blue)](https://pypi.org/project/cgs) [![PyPI](https://img.shields.io/pypi/v/cgs?color=%230eb00e)](https://pypi.org/project/cgs)
 ### Command line tool in python to place & update reservations at Cégep Sainte-Foy gym.
 
 ## Installing
