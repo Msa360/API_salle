@@ -25,12 +25,12 @@ verify credentials with: `cgs config --show`
 
 list options with: `cgs --help`
 
-### ex: create reservation at 12 (time is 0-24)
+### ex: create reservation at 2023-01-12 at 12:00 (time is 0-24)
 ```bash
-cgs create -t 12
+cgs create -d 2023-01-12 -t 12
 ```
 list possible flags with: `cgs create --help`
 
 ## Contributing
 
-Feel free to contribute! Right now the next step is to make a function that automatically fetches the userID, since most people don't know it. It is possible to fetch it only with matricule & password. DM me on twitter [@msa720360](https://twitter.com/msa720360) if you have any questions.
+Feel free to contribute!  DM me on twitter [@msa720360](https://twitter.com/msa720360) if you have any questions.
