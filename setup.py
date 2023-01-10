@@ -4,8 +4,18 @@ import os, re
 with open("README.md", "r") as f:
     long_desc = f.read()
 
-with open("requirements.txt", "r") as f:
-    requirements = [line.rstrip() for line in f]
+# with open("requirements.txt", "r") as f:
+#     requirements = [line.rstrip() for line in f]
+
+requirements = [
+    "beautifulsoup4>=4.10.0",
+    "certifi>=2021.10.8",
+    "charset-normalizer>=2.0.12",
+    "idna>=3.3",
+    "requests>=2.27.1",
+    "soupsieve>=2.3.1",
+    "urllib3>=1.26.8"
+]
 
 SRC = os.path.abspath(os.path.dirname(__file__))
 
