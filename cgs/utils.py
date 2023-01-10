@@ -20,7 +20,7 @@ def formattime(time: int) -> tuple:
     return (starthour, endhour)
 
 def find_ressource_id(username, password, sportrange, proxies=None, r_session=None) -> list:
-    '''finds the ressource id of an element'''
+    '''finds the ressource id of an element, throws error if none'''
     login_data = {
         'email': username,
         'password': password,
@@ -40,9 +40,9 @@ def find_ressource_id(username, password, sportrange, proxies=None, r_session=No
         for i in ress_soup.find_all('a', {'class': 'resourceNameSelector'}):
             ress_id_list.append(i.get('resourceid'))
 
-            return ress_id_list
+        return ress_id_list
     except:
-        return []
+        raise Exception("find_ressource_id error")
 
 def get_uid(username, password, sport_id: list, proxies=None, r_session=None):
     """
